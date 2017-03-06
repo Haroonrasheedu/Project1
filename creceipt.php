@@ -34,10 +34,11 @@
      
 
 <?php
+ error_reporting( error_reporting() & ~E_NOTICE );
    //include('dbconnect.php');
    session_start();
    include_once 'dbconnect.php';
-   $con = mysql_connect("localhost", "root", "");
+   $con = @mysql_connect("localhost", "root", "");
 if (!$con)
 {
 die('Could not connect: ' . mysql_error());
@@ -47,6 +48,7 @@ mysql_select_db("consulate", $con);
 $result = mysql_query("select * from signup where email='$_POST[email]'");
 while($rowval = mysql_fetch_array($result))
  {
+	 $coundate= $rowval['coundate'];
 $nty= $rowval['nty'];
 $cid= $rowval['cid'];
 $passno= $rowval['passno'];
@@ -1178,7 +1180,7 @@ $(document).ready(function() {
 <!--
 <img src="logo.jpg" alt="" height="100" width="100" align="middle">-->
 
-  <?php include 'scrollc.php';?> 
+  <?php include 'scrollcus.php';?> 
 <!--<input type="checkbox" name=others onclick="enable_text(this.checked)">Enable the shipper-->
 
 
@@ -1224,6 +1226,7 @@ $(document).ready(function() {
 <!--<input type="checkbox" name=others onclick="sender(this.checked)">Disable shipper-->
 <fieldset><legend>Customer Details</legend>
 <label for="field3"><span>Receipt Date<span class="required">*</span></span><input type="text" class="input-field" name="rdate" value="" /></label>
+<label for="field3"><span>Consulate Date<span class="required">*</span></span><input type="text" class="input-field" name="coundate" value="<?php echo $coundate; ?>"  /></label>
 
 <label for="field3"><span>Consulate ID<span class="required">*</span></span><input type="text" class="input-field" name="cc" value=""  /></label>
 <label for="field3"><span>Customer ID<span class="required">*</span></span><input type="text" class="input-field" name="cid" value="<?php echo $cid; ?>" /></label>
@@ -1524,27 +1527,33 @@ $(document).ready(function() {
 <fieldset>
 <legend>Booking Details</legend>
 <label for="field9"><label for="field4"><span>Category Type</span><select name="ctype" class="select-field">
-<option value="Pick-up-Cash">Passport</option>
-<option value="Customer">NIC</option>
-<option value="Customer">Other</option>
+<option value="Passport">Passport</option>
+<option value="NIC">NIC</option>
+<option value="Other">Other</option>
 </select></label>
 <label for="field9"><label for="field4"><span>Product Type</span><select name="ptype" class="select-field">
-<option value="Pick-up-Cash">New Passport</option>
-<option value="COD">Passport Renewal</option>
-<option value="Customer">New NIC</option>
-<option value="Customer">NIC Renewal</option>
-<option value="Customer">NIC Cancel</option>
-<option value="Customer">Other</option>
+<option value="<?php echo $ptype; ?>">Passport</option>
+<option value="<?php echo $ptype; ?>">NIC</option>
+<option value="<?php echo $ptype; ?>">Passport New</option>
+<option value="<?php echo $ptype; ?>">Passport Renewal</option>
+<option value="<?php echo $ptype; ?>">NIC cancellation</option>
+<option value="<?php echo $ptype; ?>">NIC Renewal</option>
+<option value="<?php echo $ptype; ?>">Other</option>
 </select></label>
 <label for="field9"><label for="field4"><span>Delivery Type</span><select name="dtype" class="select-field">
-<option value="Pick-up-Cash">Top Urgent</option>
-<option value="COD">Urgent</option>
-<option value="Customer">Normal</option>
+<option value="<?php echo $dtype; ?>">Home Delivery</option>
+<option value="<?php echo $dtype; ?>">Self Collection</option>
+<option value="<?php echo $dtype; ?>">Other</option>
+</select></label>
+<label for="field9"><label for="field4"><span>Sorting Type</span><select name="stype" class="select-field">
+<option value="<?php echo $stype; ?>">Urgent</option>
+<option value="<?php echo $stype; ?>">Normal</option>
+<option value="<?php echo $stype; ?>">Other</option>
 </select></label>
 <label for="field9"><label for="field4"><span>Processing City</span><select name="pcity" class="select-field">
-<option value="Pick-up-Cash">Dubai/sharjah</option>
-<option value="COD">Abudhabi</option>
-<option value="Customer">Other</option>
+<option value="<?php echo $pcity; ?>">Dubai/sharjah</option>
+<option value="<?php echo $pcity; ?>">Abudhabi</option>
+<option value="<?php echo $pcity; ?>">Other</option>
 </select></label>
 <label for="field2"><span>ProcessTime<span class="required">*</span></span><input type="text" class="input-field" name="ptime" value="" /></label>
 <label for="field2"><span>Status<span class="required">*</span></span><input type="text" class="input-field" name="status" value="" /></label>

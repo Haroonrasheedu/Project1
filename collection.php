@@ -19,7 +19,7 @@
 </html>
 
 <?php
-
+ error_reporting( error_reporting() & ~E_NOTICE );
 $con = @mysql_connect("localhost", "root", "");
 if (!$con)
 {
@@ -52,8 +52,9 @@ $descr= $rowval['descr'];
 $pcity= $rowval['pcity'];
 $paytype= $rowval['paytype'];
 $email= $rowval['email'];
-
+$ddate= $rowval['ddate'];
 $passno= $rowval['passno'];
+$phone= $rowval['phone'];
 }
 
 mysql_close($con);
@@ -1169,55 +1170,86 @@ html[xmlns] #nav {
 <div class="form-style-3">
 <!--<input type="checkbox" name=others onclick="sender(this.checked)">Disable shipper-->
 <fieldset><legend>Booking Details</legend>
-<label for="field3"><span>Collection Date<span class="required">*</span></span><input type="text" class="input-field" name="coldate" value="" /></label>
+<label for="field3"><span>Collection Date<span class="required">*</span></span><input type="text" class="input-field" name="coldate" value="<?php echo date("Y/m/d"); ?>" /></label>
 <label for="field3"><span>Booking Date<span class="required">*</span></span><input type="text" class="input-field" name="bdate" value="<?php echo $bdate; ?>" /></label>
-<label for="field2"><span>Delivery Date <span class="required">*</span></span><input type="text" class="input-field" name="ddate" value="" /></label>
+<label for="field2"><span>Delivery Date <span class="required">*</span></span><input type="text" class="input-field" name="ddate" value="<?php echo $ddate; ?>" /></label>
+<label for="field3"><span>Phone<span class="required">*</span></span><input type="text" class="input-field" name="phone" value="<?php echo $phone; ?>" /></label>
 
 <label for="field3"><span>Email<span class="required">*</span></span><input type="text" class="input-field" name="email" value="<?php echo $email; ?>" /></label>
 <label for="field3"><span>Booking ID<span class="required">*</span></span><input type="text" class="input-field" name="bid" value="<?php echo $bid; ?>" /></label>
-<label for="field9"><label for="field4"><span>Product Type</span><select name="ptype" class="select-field">
-<option value="Pick-up-Cash">New Passport</option>
-<option value="COD">Passport Renewal</option>
-<option value="Customer">New NIC</option>
-<option value="Customer">NIC Renewal</option>
-<option value="Customer">NIC Cancel</option>
-<option value="Customer">Other</option>
+<label for="field9"><label for="field4"><span>Sorting Type</span><select name="stype" class="select-field">
+<option value="Top Urgent">Top Urgent</option>
+<option value="Urgent">Urgent</option>
+<option value="Normal">Normal</option>
 </select></label>
 <label for="field9"><label for="field4"><span>Delivery Type</span><select name="dtype" class="select-field">
-<option value="<?php echo $dtype; ?>">Home Delivery</option>
-<option value="<?php echo $dtype; ?>">Self Collection</option>
-<option value="<?php echo $dtype; ?>">Other</option>
+<option value="Home Delivery">Home Delivery</option>
+<option value="Self Collection">Self Collection</option>
+<option value="Other">Other</option>
 </select></label>
-<label for="field9"><label for="field4"><span>Sorting Type</span><select name="stype" class="select-field">
-<option value="<?php echo $stype; ?>">Urgent</option>
-<option value="<?php echo $stype; ?>">Normal</option>
-<option value="<?php echo $stype; ?>">Other</option>
+
+<label for="field9"><label for="field4"><span>Product Type</span>
+<select name="ptype" class="select-field">
+<option value="Passport">Passport</option>
+<option value="NIC">NIC</option>
+<option value="Passport New">Passport New</option>
+<option value="Passport Renewal">Passport Renewal</option>
+<option value="NIC cancellation">NIC cancellation</option>
+<option value="NIC Renewal">NIC Renewal</option>
+<option value="Other">Other</option>
+</select></label>
+
 </select></label>
 <label for="field9"><label for="field4"><span>Processing City</span><select name="pcity" class="select-field">
-<option value="<?php echo $pcity; ?>">Dubai/sharjah</option>
-<option value="<?php echo $pcity; ?>">Abudhabi</option>
-<option value="<?php echo $pcity; ?>">Other</option>
+<option value="Dubai/sharjah">Dubai/sharjah</option>
+<option value="Abudhabi">Abudhabi</option>
+<option value="Other">Other</option>
 </select></label>
+
+
 
 
 
 </fieldset>
 <fieldset><legend>Batch In/Out Details</legend>
-<label for="field2"><span>Batchdate <span class="required">*</span></span><input type="text" class="input-field" name="batchdate" value="<?php echo $batchdate; ?>" /></label>
+<label for="field2"><span>InScan Date <span class="required">*</span></span><input type="text" class="input-field" name="batchdate" value="<?php echo $batchdate; ?>" /></label>
 <label for="field9"><label for="field4"><span>BatchIn</span><select name="batchin" class="select-field">
-<option value="batchin200217">batchin200217</option>
-<option value="batchin200217">batchin200217</option>
+<option value="batchin010317">batchin010317</option>
+<option value="batchin020317">batchin020317</option>
+<option value="batchin030317">batchin030317</option>
+<option value="batchin040317">batchin040317</option>
+<option value="batchin050317">batchin050317</option>
+<option value="batchin060317">batchin060317</option>
+<option value="batchin070317">batchin070317</option>
+<option value="batchin080317">batchin080317</option>
+<option value="batchin090317">batchin090317</option>
+<option value="batchin100317">batchin100317</option>
+
 </select></label>
-<label for="field2"><span>In-Status<span class="required">*</span></span><input type="text" class="input-field" name="instatus" value="<?php echo $instatus; ?>" />
-</label>
-<label for="field2"><span>BatchoutDate<span class="required">*</span></span><input type="text" class="input-field" name="batchoutdate" value="" /></label>
+<label for="field9"><label for="field4"><span>InStatus</span><select name="instatus" class="select-field">
+<option value="Registered">Registered</option>
+<option value="Submitted">Submitted</option>
+<option value="Success">Success</option>
+<option value="Rejected">Rejected</option>
+<option value="Pending">Pending</option>
+</select></label>
+<label for="field2"><span>OutScan Date<span class="required">*</span></span><input type="text" class="input-field" name="batchoutdate" value="" /></label>
 
 <label for="field9"><label for="field4"><span>BatchOut</span><select name="batchout" class="select-field">
-<option value="batchOut200217">batchOut200217</option>
-<option value="batchOut200217">batchOut200217</option>
+<option value="batchOut010317">batchOut010317</option>
+<option value="batchOut020317">batchOut020317</option>
+<option value="batchOut030317">batchOut030317</option>
+<option value="batchOut040317">batchOut040317</option>
+<option value="batchOut050317">batchOut050317</option>
+<option value="batchOut060317">batchOut060317</option>
+<option value="batchOut070317">batchOut070317</option>
+<option value="batchOut080317">batchOut080317</option>
+<option value="batchOut090317">batchOut090317</option>
+<option value="batchOut100317">batchOut100317</option>
+
 </select></label>
 <label for="field9"><label for="field4"><span>RackIn</span><select name="rackin" class="select-field">
-<option value="rack200217">rack200217</option>
+<option value="rack200217">rack0</option>
 <option value="rack200217">rack200217</option>
 <option value="rack200217">rack200217</option>
 <option value="rack200217">rack200217</option>
@@ -1225,8 +1257,13 @@ html[xmlns] #nav {
 <option value="rack200217">rack200217</option>
 </select></label>
 
-<label for="field2"><span>Out-Status<span class="required">*</span></span><input type="text" class="input-field" name="outstatus" value="" /></label>
-
+<label for="field9"><label for="field4"><span>OutStatus</span><select name="outstatus" class="select-field">
+<option value="Registered">Registered</option>
+<option value="Submitted">Submitted</option>
+<option value="Success">Success</option>
+<option value="Rejected">Rejected</option>
+<option value="Pending">Pending</option>
+</select></label>
 
 <label for="field2"><span>Reason<span class="required">*</span></span><input type="text" class="input-field" name="reason" value="" /></label>
 
@@ -1261,8 +1298,18 @@ html[xmlns] #nav {
 
 <label for="field2"><span>Quantity<span class="required">*</span></span><input type="text" class="input-field" name="qty" value="<?php echo $qty; ?>" /></label>
 <label for="field2"><span>Cash Amount<span class="required">*</span></span><input type="text" class="input-field" name="amt" value="<?php echo $amt; ?>" /></label>
-<label for="field2"><span>Description <span class="required">*</span></span><input type="text" class="input-field" name="" value="<?php echo $descr; ?>" /></label>
-<label for="field9"><label for="field4"><span>Mode of Payment</span><select name="paytype" class="select-field">
+<label for="field9"><label for="field4"><span>Description</span><select name="descr" class="select-field">
+<option value="<?php echo $descr; ?>">Please proceed to Receipt Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Booking Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Collection Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Flyer Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Arrival Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Operation Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Delivery Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Route Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to POD Updation</option>
+
+</select></label><label for="field9"><label for="field4"><span>Mode of Payment</span><select name="paytype" class="select-field">
 <option value="<?php echo $paytype; ?>">Pick-up-Cash</option>
 <option value="<?php echo $paytype; ?>">COD</option>
 <option value="<?php echo $paytype; ?>">Customer</option>

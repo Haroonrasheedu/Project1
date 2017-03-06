@@ -4,9 +4,9 @@
 <form action="ccreceipt.php" method="post">
  <div class = "form-style-3">
  
- <fieldset><legend> Enter your email ID:</legend>
+ <fieldset><legend> Enter your Email-ID:</legend>
   
-           <label for="field3"><span>Email<span class="required">*</span></span>
+           <label for="field3"><span>Email ID<span class="required">*</span></span>
 		   <input type="text" class="input-field" id="email" name="email" /></label>
 
             
@@ -34,21 +34,24 @@
      
 
 <?php
+ error_reporting( error_reporting() & ~E_NOTICE );
    //include('dbconnect.php');
    session_start();
    include_once 'dbconnect.php';
-   $con = mysql_connect("localhost", "root", "");
+   $con = @mysql_connect("localhost", "root", "");
 if (!$con)
 {
 die('Could not connect: ' . mysql_error());
 }
 mysql_select_db("consulate", $con);
 //$sql="select * from accountdtl";
-$result = mysql_query("select * from signup where email='$_POST[email]'");
+$result = mysql_query("select * from count where email='$_POST[email]'");
 while($rowval = mysql_fetch_array($result))
  {
 $nty= $rowval['nty'];
 $cid= $rowval['cid'];
+$coundate= $rowval['coundate'];
+$cc= $rowval['cc'];
 $passno= $rowval['passno'];
 $fname= $rowval['fname'];
 $lname= $rowval['lname'];
@@ -64,6 +67,10 @@ $street= $rowval['street'];
 $area= $rowval['area'];
 $city= $rowval['city'];
 $phone= $rowval['phone'];
+$qty= $rowval['qty'];
+$amt= $rowval['amt'];
+$descr= $rowval['descr'];
+$instatus= $rowval['instatus'];
 }
 mysql_close($con);
 
@@ -1209,15 +1216,16 @@ $(document).ready(function() {
 
 
 
-<form action="dotmatrix.php" name="myform" method="post">
+<form action="receiptdb.php" name="myform" method="post">
 
 
 <div class="form-style-3">
 <!--<input type="checkbox" name=others onclick="sender(this.checked)">Disable shipper-->
 <fieldset><legend>Customer Details</legend>
 <label for="field3"><span>Receipt Date<span class="required">*</span></span><input type="text" class="input-field" name="rdate" value="" /></label>
+<label for="field3"><span>Consulate Date<span class="required">*</span></span><input type="text" class="input-field" name="coundate" value="<?php echo $coundate; ?>" /></label>
 
-<label for="field3"><span>Consulate ID<span class="required">*</span></span><input type="text" class="input-field" name="cc" value="" /></label>
+<label for="field3"><span>Consulate ID<span class="required">*</span></span><input type="text" class="input-field" name="cc" value="<?php echo $cc; ?>" /></label>
 <label for="field3"><span>Customer ID<span class="required">*</span></span><input type="text" class="input-field" name="cid" value="<?php echo $cid; ?>" /></label>
 <label for="field2"><span>Passport No<span class="required">*</span></span><input type="text" class="input-field" name="passno" value="<?php echo $passno; ?>" /></label>
 <label for="field4"><span>First Name<span class="required">*</span></span><input type="text" class="input-field" name="fname" value="<?php echo $fname; ?>" /></label>
@@ -1501,13 +1509,23 @@ $(document).ready(function() {
 <legend>Payment Details</legend>
 <!--<label for="field9"><label for="field4"><span>awbno</span><select name="awbno" class="select-field"></select></label>-->
 <!--<label for="field3"><span>awbno<span class="required">*</span></span><input type="text" class="input-field" name="awbno" value="" /></label>-->
-<label for="field2"><span>Quantity<span class="required">*</span></span><input type="text" class="input-field" name="qty" value="" /></label>
-<label for="field2"><span>Cash Amount<span class="required">*</span></span><input type="text" class="input-field" name="amt" value="" /></label>
-<label for="field2"><span>Description <span class="required">*</span></span><input type="text" class="input-field" name="descr" value="" /></label>
-<label for="field9"><label for="field4"><span>Mode of Payment</span><select name="paytype" class="select-field">
-<option value="Pick-up-Cash">Pick-up-Cash</option>
-<option value="COD">COD</option>
-<option value="Customer">Customer</option>
+<label for="field2"><span>Quantity<span class="required">*</span></span><input type="text" class="input-field" name="qty" value="<?php echo $qty; ?>" /></label>
+<label for="field2"><span>Cash Amount<span class="required">*</span></span><input type="text" class="input-field" name="amt" value="<?php echo $amt; ?>" /></label>
+<label for="field9"><label for="field4"><span>Description</span><select name="descr" class="select-field">
+<option value="<?php echo $descr; ?>">Please proceed to Receipt Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Booking Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Collection Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Flyer Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Arrival Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Operation Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Delivery Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Route Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to POD Updation</option>
+
+</select></label><label for="field9"><label for="field4"><span>Mode of Payment</span><select name="paytype" class="select-field">
+<option value="<?php echo $paytype; ?>">Pick-up-Cash</option>
+<option value="<?php echo $paytype; ?>">COD</option>
+<option value="<?php echo $paytype; ?>">Customer</option>
 </select></label>
 <label><span>&nbsp;</span><input type="submit" value="Submit" /></label>
 </fieldset>
@@ -1521,26 +1539,37 @@ $(document).ready(function() {
 <option value="Customer">Other</option>
 </select></label>
 <label for="field9"><label for="field4"><span>Product Type</span><select name="ptype" class="select-field">
-<option value="Pick-up-Cash">New Passport</option>
-<option value="COD">Passport Renewal</option>
-<option value="Customer">New NIC</option>
-<option value="Customer">NIC Renewal</option>
-<option value="Customer">NIC Cancel</option>
-<option value="Customer">Other</option>
+<option value="<?php echo $ptype; ?>">Passport</option>
+<option value="<?php echo $ptype; ?>">NIC</option>
+<option value="<?php echo $ptype; ?>">Passport New</option>
+<option value="<?php echo $ptype; ?>">Passport Renewal</option>
+<option value="<?php echo $ptype; ?>">NIC cancellation</option>
+<option value="<?php echo $ptype; ?>">NIC Renewal</option>
+<option value="<?php echo $ptype; ?>">Other</option>
 </select></label>
 <label for="field9"><label for="field4"><span>Delivery Type</span><select name="dtype" class="select-field">
-<option value="Pick-up-Cash">Top Urgent</option>
-<option value="COD">Urgent</option>
-<option value="Customer">Normal</option>
+<option value="<?php echo $dtype; ?>">Home Delivery</option>
+<option value="<?php echo $dtype; ?>">Self Collection</option>
+<option value="<?php echo $dtype; ?>">Other</option>
+</select></label>
+<label for="field9"><label for="field4"><span>Sorting Type</span><select name="stype" class="select-field">
+<option value="<?php echo $stype; ?>">Urgent</option>
+<option value="<?php echo $stype; ?>">Normal</option>
+<option value="<?php echo $stype; ?>">Other</option>
 </select></label>
 <label for="field9"><label for="field4"><span>Processing City</span><select name="pcity" class="select-field">
-<option value="Pick-up-Cash">Dubai/sharjah</option>
-<option value="COD">Abudhabi</option>
-<option value="Customer">Other</option>
+<option value="<?php echo $pcity; ?>">Dubai/sharjah</option>
+<option value="<?php echo $pcity; ?>">Abudhabi</option>
+<option value="<?php echo $pcity; ?>">Other</option>
 </select></label>
 <label for="field2"><span>ProcessTime<span class="required">*</span></span><input type="text" class="input-field" name="ptime" value="" /></label>
-<label for="field2"><span>Status<span class="required">*</span></span><input type="text" class="input-field" name="status" value="" /></label>
-
+<label for="field9"><label for="field4"><span>InStatus</span><select name="instatus" class="select-field">
+<option value="<?php echo $instatus; ?>">Registered</option>
+<option value="<?php echo $instatus; ?>">Submitted</option>
+<option value="<?php echo $instatus; ?>">Success</option>
+<option value="<?php echo $instatus; ?>">Rejected</option>
+<option value="<?php echo $instatus; ?>">Pending</option>
+</select></label>
 </fieldset>
 
 </div>

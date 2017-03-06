@@ -1,6 +1,6 @@
-  <?php include 'scrollcus.php';?> 
+  <?php include 'scrollc.php';?> 
 <?php
-
+error_reporting( error_reporting() & ~E_NOTICE );
 /* Attempt MySQL server connection. Assuming you are running MySQL
 server with default setting (user 'root' with no password) */
 $link = mysqli_connect("localhost", "root", "", "consulate");
@@ -13,6 +13,7 @@ if($link === false){
  
 // Escape user inputs for security
 $coldate = mysqli_real_escape_string($link, $_POST['coldate']);
+$phone = mysqli_real_escape_string($link, $_POST['phone']);
 	$bid = mysqli_real_escape_string($link, $_POST['bid']);	
 $batchin = mysqli_real_escape_string($link, $_POST['batchin']);	
 $batchout = mysqli_real_escape_string($link, $_POST['batchout']);	
@@ -48,11 +49,11 @@ $descr = mysqli_real_escape_string($link, $_POST['descr']);
 
 
 // attempt insert query execution
-$sql = "INSERT INTO colletion (coldate, reason, rackin, ddate, batchdate, batchin, batchout, passno, email, cc, coundate, rdate, dtype, ptype, stype, pcity, instatus, amt, descr, qty, cid, bdate, paytype, rid, outstatus, bid, batchoutdate) VALUES ('$coldate', '$reason', '$rackin', '$ddate', '$batchdate', '$batchin', '$batchout', '$passno', '$email', '$cc', '$coundate', '$rdate', '$dtype', '$ptype', '$stype', '$pcity', '$instatus', '$amt', '$descr', '$qty', '$cid', '$bdate', '$paytype', '$rid', '$outstatus', '$bid', '$batchoutdate')";
+$sql = "INSERT INTO colletion (phone, coldate, reason, rackin, ddate, batchdate, batchin, batchout, passno, email, cc, coundate, rdate, dtype, ptype, stype, pcity, instatus, amt, descr, qty, cid, bdate, paytype, rid, outstatus, bid, batchoutdate) VALUES ('$phone', '$coldate', '$reason', '$rackin', '$ddate', '$batchdate', '$batchin', '$batchout', '$passno', '$email', '$cc', '$coundate', '$rdate', '$dtype', '$ptype', '$stype', '$pcity', '$instatus', '$amt', '$descr', '$qty', '$cid', '$bdate', '$paytype', '$rid', '$outstatus', '$bid', '$batchoutdate')";
 
 
 if(mysqli_query($link, $sql)){
-echo "1";
+echo "Successfully Collected; Please Go to Flyer Attachment";
 } else{
     echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
 }

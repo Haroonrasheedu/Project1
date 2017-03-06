@@ -4,9 +4,9 @@
 <form action="consulate.php" method="post">
  <div class = "form-style-3">
  
- <fieldset><legend> Enter your email ID:</legend>
+ <fieldset><legend> Enter your Customer Email:</legend>
   
-           <label for="field3"><span>Email<span class="required">*</span></span>
+           <label for="field3"><span>Customer Email<span class="required">*</span></span>
 		   <input type="text" class="input-field" id="email" name="email" /></label>
 
             
@@ -33,8 +33,10 @@
      
 
 <?php
+ error_reporting( error_reporting() & ~E_NOTICE );
    //include('dbconnect.php');
    session_start();
+   
    include_once 'dbconnect.php';
    $con = @mysql_connect("localhost", "root", "");
 if (!$con)
@@ -43,6 +45,7 @@ die('Could not connect: ' . mysql_error());
 }
 mysql_select_db("consulate", $con);
 //$sql="select * from accountdtl";
+
 $result = mysql_query("select * from signup where email='$_POST[email]'");
 while($rowval = mysql_fetch_array($result))
  {
@@ -50,6 +53,7 @@ $email= $rowval['email'];
 $cid= $rowval['cid'];
 
 }
+
 mysql_close($con);
 
 ?>
@@ -1488,7 +1492,18 @@ $(document).ready(function() {
 <!--<label for="field3"><span>awbno<span class="required">*</span></span><input type="text" class="input-field" name="awbno" value="" /></label>-->
 <label for="field2"><span>Quantity<span class="required">*</span></span><input type="text" class="input-field" name="qty" value="" /></label>
 <label for="field2"><span>Cash Amount<span class="required">*</span></span><input type="text" class="input-field" name="amt" value="" /></label>
-<label for="field2"><span>Description <span class="required">*</span></span><input type="text" class="input-field" name="descr" value="" /></label>
+<label for="field9"><label for="field4"><span>Description</span><select name="descr" class="select-field">
+<option value="<?php echo $descr; ?>">Please proceed to Receipt Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Booking Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Collection Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Flyer Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Arrival Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Operation Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Delivery Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to Route Counter</option>
+<option value="<?php echo $descr; ?>">Please proceed to POD Updation</option>
+
+</select></label>
 <label for="field9"><label for="field4"><span>Mode of Payment</span><select name="paytype" class="select-field">
 <option value="Pick-up-Cash">Pick-up-Cash</option>
 <option value="COD">COD</option>
@@ -1500,31 +1515,41 @@ $(document).ready(function() {
 <div class="form-style-8">
 <fieldset>
 <legend>Booking Details</legend>
-<label for="field9"><label for="field4"><span>Category Type</span><select name="stype" class="select-field">
-<option value="">Passport</option>
-<option value="">NIC</option>
-<option value="">Other</option>
-</select></label>
-<label for="field9"><label for="field4"><span>Product Type</span><select name="ptype" class="select-field">
-<option value="New Passport">New Passport</option>
-<option value="Passport Renewal">Passport Renewal</option>
-<option value="New NIC">New NIC</option>
-<option value="NIC Renewal">NIC Renewal</option>
-<option value="NIC Cancel">NIC Cancel</option>
-<option value="Other">Other</option>
-</select></label>
-<label for="field9"><label for="field4"><span>Delivery Type</span><select name="dtype" class="select-field">
+<label for="field9"><label for="field4"><span>Sorting Type</span><select name="stype" class="select-field">
 <option value="Top Urgent">Top Urgent</option>
 <option value="Urgent">Urgent</option>
 <option value="Normal">Normal</option>
 </select></label>
+<label for="field9"><label for="field4"><span>Delivery Type</span><select name="dtype" class="select-field">
+<option value="Home Delivery">Home Delivery</option>
+<option value="Self Collection">Self Collection</option>
+<option value="Other">Other</option>
+</select></label>
+
+<label for="field9"><label for="field4"><span>Product Type</span>
+<select name="ptype" class="select-field">
+<option value="Passport">Passport</option>
+<option value="NIC">NIC</option>
+<option value="Passport New">Passport New</option>
+<option value="Passport Renewal">Passport Renewal</option>
+<option value="NIC cancellation">NIC cancellation</option>
+<option value="NIC Renewal">NIC Renewal</option>
+<option value="Other">Other</option>
+</select></label>
+
+</select></label>
 <label for="field9"><label for="field4"><span>Processing City</span><select name="pcity" class="select-field">
-<option value="Dubai">Dubai/sharjah</option>
+<option value="Dubai/sharjah">Dubai/sharjah</option>
 <option value="Abudhabi">Abudhabi</option>
 <option value="Other">Other</option>
 </select></label>
-<label for="field2"><span>ProcessTime<span class="required">*</span></span><input type="text" class="input-field" name="ptime" value="" /></label>
-<label for="field2"><span>InStatus<span class="required">*</span></span><input type="text" class="input-field" name="instatus" value="" /></label>
+<label for="field9"><label for="field4"><span>InStatus</span><select name="instatus" class="select-field">
+<option value="Registered">Registered</option>
+<option value="Submitted">Submitted</option>
+<option value="Success">Success</option>
+<option value="Rejected">Rejected</option>
+<option value="Pending">Pending</option>
+</select></label>
 
 </fieldset>
 

@@ -1,6 +1,6 @@
   <?php include 'scrollc.php';?> 
 <?php
-
+ error_reporting( error_reporting() & ~E_NOTICE );
 /* Attempt MySQL server connection. Assuming you are running MySQL
 server with default setting (user 'root' with no password) */
 $link = mysqli_connect("localhost", "root", "", "consulate");
@@ -52,12 +52,13 @@ $descr = mysqli_real_escape_string($link, $_POST['descr']);
 $scase = mysqli_real_escape_string($link, $_POST['scase']);
 $vanno = mysqli_real_escape_string($link, $_POST['vanno']);
 $dcode = mysqli_real_escape_string($link, $_POST['dcode']);
+$phone = mysqli_real_escape_string($link, $_POST['phone']);
 // attempt insert query execution
-$sql = "INSERT INTO arrival (fid, arrdate, dcode, vanno, scase, flydate, coldate, reason, rackin, ddate, batchdate, batchin, batchout, passno, email, cc, coundate, rdate, dtype, ptype, stype, pcity, instatus, amt, descr, qty, cid, bdate, paytype, rid, outstatus, bid, batchoutdate, colid) VALUES ('$fid', '$arrdate', '$dcode', '$vanno', '$scase', '$flydate', '$coldate', '$reason', '$rackin', '$ddate', '$batchdate', '$batchin', '$batchout', '$passno', '$email', '$cc', '$coundate', '$rdate', '$dtype', '$ptype', '$stype', '$pcity', '$instatus', '$amt', '$descr', '$qty', '$cid', '$bdate', '$paytype', '$rid', '$outstatus', '$bid', '$batchoutdate', '$colid')";
+$sql = "INSERT INTO arrival (phone, fid, arrdate, dcode, vanno, scase, flydate, coldate, reason, rackin, ddate, batchdate, batchin, batchout, passno, email, cc, coundate, rdate, dtype, ptype, stype, pcity, instatus, amt, descr, qty, cid, bdate, paytype, rid, outstatus, bid, batchoutdate, colid) VALUES ('$phone', '$fid', '$arrdate', '$dcode', '$vanno', '$scase', '$flydate', '$coldate', '$reason', '$rackin', '$ddate', '$batchdate', '$batchin', '$batchout', '$passno', '$email', '$cc', '$coundate', '$rdate', '$dtype', '$ptype', '$stype', '$pcity', '$instatus', '$amt', '$descr', '$qty', '$cid', '$bdate', '$paytype', '$rid', '$outstatus', '$bid', '$batchoutdate', '$colid')";
 
 
 if(mysqli_query($link, $sql)){
-echo "1";
+echo "Successfully Arrival Finioshed; Please proceed to Operation ID";
 } else{
     echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
 }
